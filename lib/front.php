@@ -102,22 +102,20 @@ function csbh_post_hero( $post_id = 0, $classes = '', $echo = true ) {
 		if ( $repeat == 'repeat-x' && ! empty( $ximage ) ) {
 
 			// set the style
-			$style .= 'background: url( ' . esc_url( $image ) . ' ) center ' . esc_attr( $repeat ) . ', url( ' . esc_url( $ximage ) . ' ) center repeat-x;';
-			$style .= 'background-size: ' . esc_attr( $size ) . ', background-size: ' . esc_attr( $size ) . ';';
+			$style .= 'background: url( ' . esc_url( $image ) . ' ) center no-repeat, url( ' . esc_url( $ximage ) . ' ) center repeat-x;';
+			$style .= 'background-size: ' . esc_attr( $size ) . ', ' . esc_attr( $size ) . ';';
 
 		} else { // we had a normal one.
 
 			// set the style
-			$style .= 'background: url( ' . esc_url( $image ) . ' ) center ' . esc_attr( $repeat ) . ';';
+			$style .= 'background: ' . esc_attr( $color ) . ' url( ' . esc_url( $image ) . ' ) center ' . esc_attr( $repeat ) . ';';
 			$style .= 'background-size: ' . esc_attr( $size ) . ';';
 		}
 	}
 
 	// set the HTML class, pulling in our style
 	$html  .= '<div class="' . $classes . ' hero--post--custom ' . $medium . '" style="' . $style . '">';
-		$html  .= '<div class="cell cell--m well well--l">';
-		// the `post_hero_image` thing goes here once I figure out how it works
-		$html  .= '</div>';
+		$html  .= '<div class="cell cell--m well well--l"></div>';
 	$html  .= '</div>';
 
 	// echo if requested
