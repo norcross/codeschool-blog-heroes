@@ -8,6 +8,22 @@
  * @package Codeschool Blog Heroes
  */
 
+function csbh_svg_banner( $name = '' ) {
+
+	// get my image directory
+	$folder = get_bloginfo( 'template_directory' ) . '/images/';
+
+	// set my file
+	$file   = $folder . $name;
+
+	// make sure it exists
+	$check  = get_headers( $file );
+
+	// and return it
+	return stripos( $check[0], '200 OK' ) ? '<img src="' . esc_url( $file ) . '" width="670" />' : false;
+}
+
+
 /**
  * load and display our post hero
  *
@@ -46,11 +62,12 @@ function csbh_post_hero( $post_id = 0, $classes = '', $echo = true ) {
 		// fetch my category
 		$catobj = get_the_category( $post_id );
 		$cslug  = ! empty( $catobj[0] ) && ! empty( $catobj[0]->slug ) ? $catobj[0]->slug : '';
+		$csvg   = 'bg-hero-' . $cslug . '.svg';
 
 		// set the HTML class with the SVG
 		$html  .= '<div class="' . $classes . ' hero--post--category hero--post--category--' . $cslug . '">';
 			$html  .= '<div class="cell cell--m well well--l">';
-			$html  .= '<img src="' . img( "bg-hero-' . $cslug . '.svg") . '" width="670" />';
+			$html  .= csbh_svg_banner( $csvg );
 			$html  .= '</div>';
 		$html  .= '</div>';
 
