@@ -1,0 +1,21 @@
+table.csbh-meta-table {}
+
+table.csbh-meta-table tr.csbh-meta-checkbox-field input {
+	margin: 0 5px 0 0;
+}
+
+table.csbh-meta-table tr.csbh-meta-checkbox-field label {
+	font-style: italic;
+}
+
+table.csbh-meta-table tr.csbh-meta-field input.one-half,
+table.csbh-meta-table tr.csbh-meta-field select.one-half {
+	width: 47%;
+	margin-right: 2%;
+}
+
+table.csbh-meta-table tr.csbh-meta-field input.three-fourths,
+table.csbh-meta-table tr.csbh-meta-field select.three-fourths {
+	width: 73%;
+	margin-right: 2%;
+}
