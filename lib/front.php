@@ -33,10 +33,6 @@ function csbh_post_hero( $post_id = 0, $classes = '', $echo = true ) {
 		$post_id    = absint( $post->ID );
 	}
 
-	// fetch my category
-	$catobj = get_the_category( $post_id );
-	$cslug  = ! empty( $catobj[0] ) && ! empty( $catobj[0]->slug ) ? $catobj[0]->slug : '';
-
 	// fetch our meta
 	$meta   = get_post_meta( $post_id, '_csbh_meta', true );
 
@@ -47,8 +43,16 @@ function csbh_post_hero( $post_id = 0, $classes = '', $echo = true ) {
 	// bail if we have no meta, or the image isn't there
 	if ( empty( $meta ) || empty( $meta['image'] ) ) {
 
-		// add the stuff we have
-		$html  .= 'class="' . $classes . ' hero--post--category hero--post--category--' . $cslug . '"';
+		// fetch my category
+		$catobj = get_the_category( $post_id );
+		$cslug  = ! empty( $catobj[0] ) && ! empty( $catobj[0]->slug ) ? $catobj[0]->slug : '';
+
+		// set the HTML class with the SVG
+		$html  .= '<div class="' . $classes . ' hero--post--category hero--post--category--' . $cslug . '">';
+			$html  .= '<div class="cell cell--m well well--l">';
+			$html  .= '<img src="' . img( "bg-hero-' . $cslug . '.svg") . '" width="670" />';
+			$html  .= '</div>';
+		$html  .= '</div>';
 
 		// echo if requested
 		if ( ! empty( $echo ) ) {
