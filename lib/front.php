@@ -20,7 +20,7 @@ function csbh_svg_banner( $name = '' ) {
 	$check  = get_headers( $file );
 
 	// and return it
-	return stripos( $check[0], '200 OK' ) ? '<img src="' . esc_url( $file ) . '" width="670" />' : false;
+	return ! empty( $check[0] ) && stripos( $check[0], '200 OK' ) ? '<img src="' . esc_url( $file ) . '" width="670" />' : false;
 }
 
 
