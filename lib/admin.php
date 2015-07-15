@@ -67,6 +67,9 @@ class CSBH_Admin
 	 */
 	public static function blog_heroes_meta( $post ) {
 
+		// run our conversion script
+		self::convert_existing_meta( $post_id );
+
 		// get array of input data
 		$meta   = get_post_meta( $post->ID, '_csbh_meta', true );
 
@@ -209,9 +212,6 @@ class CSBH_Admin
 		} else {
 			delete_post_meta( $post_id, '_csbh_meta' );
 		}
-
-		// and purge the transient
-		delete_transient( 'csbh_hero_data_' . $post_id );
 	}
 
 	/**
@@ -275,6 +275,80 @@ class CSBH_Admin
 			'cover'     => 'Cover',
 			'contain'   => 'Contain',
 		);
+	}
+
+	/**
+	 * convert the existing meta if it exists
+	 *
+	 * @param  [type] $post_id [description]
+	 * @return [type]          [description]
+	 */
+	public static function convert_existing_meta( $post_id ) {
+
+		// do our check first
+		$check  = get_post_meta( $post_id, '_csbh_meta_convert', true );
+
+		// bail if we have run already
+		if ( ! empty( $check ) ) {
+			return;
+		}
+
+		// pull out the existing
+		$space      = get_post_meta( $post_id, 'hero_space', true );
+		$color      = get_post_meta( $post_id, 'hero_background_color', true );
+		$image      = get_post_meta( $post_id, 'hero_background_image', true );
+		$ximage     = get_post_meta( $post_id, 'hero_background_repeat_image', true );
+		$repeat     = get_post_meta( $post_id, 'hero_background_repeat', true );
+		$size       = get_post_meta( $post_id, 'hero_background_size', true );
+
+		// set my empty data
+		$data   = array();
+
+		// check for the checkbox
+		if ( ! empty( $space ) ) {
+			$data['space']  = true;
+		}
+
+		// check for color
+		if ( ! empty( $color ) ) {
+			$data['color']  = sanitize_text_field( $color );
+		}
+
+		// check for the base image
+		if ( ! empty( $image ) ) {
+			$data['image']  = esc_url( $image );
+		}
+
+		// check for the repeat image
+		if ( ! empty( $ximage ) ) {
+			$data['ximage']  = esc_url( $ximage );
+		}
+
+		// check for repeat
+		if ( ! empty( $repeat ) ) {
+			$data['repeat']  = sanitize_text_field( $repeat );
+		}
+
+		// check for size
+		if ( ! empty( $size ) ) {
+			$data['size']  = sanitize_text_field( $size );
+		}
+
+		// filter empty
+		$data   = array_filter( $data );
+
+		// update or delete
+		if ( ! empty( $data ) ) {
+			update_post_meta( $post_id, '_csbh_meta', $data );
+		} else {
+			delete_post_meta( $post_id, '_csbh_meta' );
+		}
+
+		// and set our key
+		update_post_meta( $post_id, '_csbh_meta_convert', true );
+
+		// and finish
+		return;
 	}
 
 /// end class
